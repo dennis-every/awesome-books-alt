@@ -7,23 +7,13 @@ function Book(title, author, id) {
   this.id = id;
 }
 
-let booksArray = [
-  {
-    title: 'Lord of the Rings',
-    author: 'Tolkein',
-    id: '0',
-  },
-  {
-    title: 'Harry Potter',
-    author: 'Author',
-    id: '1',
-  },
-];
+let booksArray = [];
 
 function removeBookHandler(id) {
-  console.log(booksArray);
   booksArray = booksArray.filter((e) => e.id !== id);
-  console.log(booksArray);
+  const removeBtn = document.getElementById(id);
+  const bookItem = removeBtn.parentElement;
+  bookItem.parentElement.removeChild(bookItem);
 }
 
 const appendBook = (title, author, id) => {
@@ -63,13 +53,3 @@ bookForm.addEventListener('submit', (event) => {
   appendBook(book.title, book.author, book.id);
   bookForm.reset();
 });
-
-const removeButtons = document.querySelectorAll("button");
-removeButtons.forEach((remButton) => {
-  remButton.addEventListener('click', (event) => {
-    
-  })
-})
-
-
-
