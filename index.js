@@ -7,7 +7,7 @@ function Book(title, author, id) {
   this.id = id;
 }
 
-const booksArray = [
+let booksArray = [
   {
     title: 'Lord of the Rings',
     author: 'Tolkein',
@@ -20,13 +20,26 @@ const booksArray = [
   },
 ];
 
+function removeBookHandler(id) {
+  console.log(booksArray);
+  booksArray = booksArray.filter((e) => e.id !== id);
+  console.log(booksArray);
+}
+
 const appendBook = (title, author, id) => {
   const bookItem = document.createElement('li');
+  const removeButton = document.createElement('button');
+  removeButton.innerText = 'Remove';
+  removeButton.setAttribute('type', 'button');
+  removeButton.setAttribute('id', id);
   bookItem.innerHTML = `
     <h2>${title}</h2>
-    <h2>${author}</h2>
-    <button type="button" id=${id}>Remove</button>`;
+    <h2>${author}</h2>`;
+  bookItem.append(removeButton);
   booksList.append(bookItem);
+  removeButton.addEventListener('click', (event) => {
+    removeBookHandler(id);
+  });
 };
 
 function loadBooks() {
@@ -50,3 +63,13 @@ bookForm.addEventListener('submit', (event) => {
   appendBook(book.title, book.author, book.id);
   bookForm.reset();
 });
+
+const removeButtons = document.querySelectorAll("button");
+removeButtons.forEach((remButton) => {
+  remButton.addEventListener('click', (event) => {
+    
+  })
+})
+
+
+
