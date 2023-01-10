@@ -1,23 +1,52 @@
 const booksList = document.getElementById('books_list');
 const bookForm = document.getElementById('booksForm');
 
-function Book(title, author, id) {
-  this.title = title;
-  this.author = author;
-  this.id = id;
+class Book {
+  constructor(title, author) {
+    this.title = title;
+    this.author = author;
+    this.id = Math.random();
+  }
+
+  addBook(title, author) {
+    const book = new Book(title, author);
+    booksArray.push(book);
+    storeData(booksArray);
+  }
 }
 
 let booksArray = [];
 
 let availableStorage;
 
+// function displayData() {
+//   // booksList.innerHTML = '';
+//   booksArray.forEach((book) => {
+//     const bookItem = document.createElement('li');
+//     const removeButton = document.createElement('button');
+//     const hr = document.createElement('hr');
+//     bookItem.setAttribute('style', 'max-width: 300px;');
+//     removeButton.innerText = 'Remove';
+//     removeButton.setAttribute('type', 'button');
+//     removeButton.setAttribute('id', book.id);
+//     bookItem.innerHTML = `
+//       <span>${book.title}</span> <br>
+//       <span>${book.author}</span> <br>
+//       `;
+//     bookItem.append(removeButton);
+//     bookItem.append(hr);
+//     booksList.append(bookItem);
+//     removeButton.addEventListener('click', () => {
+//       removeBookHandler(book.id);
+//     });
+//   });
+// }
+
 function retrieveData() {
   const data = availableStorage.getItem('books');
   const parseData = JSON.parse(data);
-  if (parseData?.length > 0) {
-    parseData.forEach((book) => {
-      booksArray.push(book);
-    });
+  if (parseData) {
+    booksArray = parseData;
   }
 }
 
@@ -36,30 +65,9 @@ function removeBookHandler(id) {
   bookItem.parentElement.removeChild(bookItem);
 }
 
-const appendBook = (title, author, id) => {
-  const bookItem = document.createElement('li');
-  const removeButton = document.createElement('button');
-  const hr = document.createElement('hr');
-  bookItem.setAttribute('style', 'max-width: 300px;');
-  // hr.setAttribute('style', '');
-  removeButton.innerText = 'Remove';
-  removeButton.setAttribute('type', 'button');
-  removeButton.setAttribute('id', id);
-  bookItem.innerHTML = `
-    <span>${title}</span> <br>  
-    <span>${author}</span> <br>
-    `;
-  bookItem.append(removeButton);
-  bookItem.append(hr);
-  booksList.append(bookItem);
-  removeButton.addEventListener('click', () => {
-    removeBookHandler(id);
-  });
-};
-
 function loadBooks() {
   booksArray.forEach((book) => {
-    appendBook(book.title, book.author, book.id);
+    appendBookToDOM(book.title, book.author, book.id);
   });
 }
 
@@ -78,7 +86,15 @@ function storageAvailable(type) {
     storage.removeItem(x);
     return true;
   } catch (e) {
-    return (e instanceof DOMException && (e.code === 22 || e.code === 1014 || e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') && storage && storage.length !== 0);
+    return (
+      e instanceof DOMException &&
+      (e.code === 22 ||
+        e.code === 1014 ||
+        e.name === 'QuotaExceededError' ||
+        e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+      storage &&
+      storage.length !== 0
+    );
   }
 }
 
@@ -90,15 +106,33 @@ if (storageAvailable('localStorage')) {
   availableStorage = null;
 }
 
+const appendBookToDOM = (title, author, id) => {
+  const bookItem = document.createElement('li');
+  const removeButton = document.createElement('button');
+  const hr = document.createElement('hr');
+  bookItem.setAttribute('style', 'max-width: 300px;');
+  removeButton.innerText = 'Remove';
+  removeButton.setAttribute('type', 'button');
+  removeButton.setAttribute('id', id);
+  bookItem.innerHTML = `
+    <span>${title}</span> <br>  
+    <span>${author}</span> <br>
+    `;
+  bookItem.append(removeButton);
+  bookItem.append(hr);
+  booksList.append(bookItem);
+  removeButton.addEventListener('click', () => {
+    removeBookHandler(id);
+  });
+};
+
 bookForm.addEventListener('submit', (event) => {
   event.preventDefault();
-  const book = new Book(
+  let newBook = new Book(
     bookForm.elements.title.value,
-    bookForm.elements.author.value,
-    Math.random(),
+    bookForm.elements.author.value
   );
-  booksArray.push(book);
-  appendBook(book.title, book.author, book.id);
-  storeData(booksArray);
+  newBook.addBook(newBook.title, newBook.author);
   bookForm.reset();
+  appendBookToDOM(newBook.title, newBook.author, newBook.id);
 });
