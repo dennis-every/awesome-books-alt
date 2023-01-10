@@ -9,6 +9,24 @@ function Book(title, author, id) {
 
 let booksArray = [];
 
+function retrieveData() {
+  const data = availableStorage.getItem('books');
+  const parseData = JSON.parse(data);
+  if (parseData?.length > 0) {
+    console.log(parseData);
+    parseData.forEach((book) => {
+      booksArray.push(book);
+    });
+  }
+}
+
+function storeData(booksArray) {
+  if (availableStorage) {
+    const jsonData = JSON.stringify(booksArray);
+    availableStorage.setItem('books', jsonData);
+  }
+}
+
 function removeBookHandler(id) {
   booksArray = booksArray.filter((e) => e.id !== id);
   storeData(booksArray);
@@ -87,30 +105,12 @@ if (storageAvailable('localStorage')) {
   availableStorage = null;
 }
 
-function retrieveData() {
-  const data = availableStorage.getItem('books');
-  const parseData = JSON.parse(data);
-  if (parseData?.length > 0) {
-    console.log(parseData);
-    parseData.forEach((book) => {
-      booksArray.push(book);
-    });
-  }
-}
-
-function storeData(booksArray) {
-  if (availableStorage) {
-    const jsonData = JSON.stringify(booksArray);
-    availableStorage.setItem('books', jsonData);
-  }
-}
-
 bookForm.addEventListener('submit', (event) => {
   event.preventDefault();
   const book = new Book(
-    bookForm.elements['title'].value,
-    bookForm.elements['author'].value,
-    Math.random()
+    bookForm.elements.title.value,
+    bookForm.elements.author.value,
+    Math.random(),
   );
   booksArray.push(book);
   appendBook(book.title, book.author, book.id);
