@@ -12,14 +12,21 @@
     </header>
     <main>
       <section id="books_section">
-        <ul style="list-style: none" id="books_list"></ul>
+        <ul
+          style="list-style: none; margin: 0; padding: 0"
+          id="books_list"
+        ></ul>
       </section>
+
+      <br />
 
       <section id="form_section">
         <form action="post" id="booksForm">
           <input type="text" name="title" id="title" placeholder="Title" />
           <br />
+          <br />
           <input type="text" name="author" id="author" placeholder="Author" />
+          <br />
           <br />
           <button type="submit" id="addBooksBtn">Add</button>
         </form>
