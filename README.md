@@ -2,11 +2,11 @@
 
 <div align="center">
   <!-- You are encouraged to replace this logo with your own! Otherwise you can also remove it. -->
-  <img src="screen1.png" alt="logo" width="140"  height="auto" />
-  <img src="screen2.png" alt="logo" width="140"  height="auto" />
+  <img src="./assets/README/screen1.png" alt="logo" width="140"  height="auto" />
+  <img src="./assets/README/screen2.png" alt="logo" width="140"  height="auto" />
   <br/>
 
-  <img src="screen3.png" alt="logo" width="140"  height="auto" />
+  <img src="assets/README/creen3.png" alt="logo" width="140"  height="auto" />
   <br/>
 
   <h3><b>Microverse README Template</b></h3>
