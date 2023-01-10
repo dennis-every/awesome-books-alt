@@ -9,11 +9,12 @@ function Book(title, author, id) {
 
 let booksArray = [];
 
+// let availableStorage;
+
 function retrieveData() {
   const data = availableStorage.getItem('books');
   const parseData = JSON.parse(data);
   if (parseData?.length > 0) {
-    console.log(parseData);
     parseData.forEach((book) => {
       booksArray.push(book);
     });
@@ -51,7 +52,7 @@ const appendBook = (title, author, id) => {
   bookItem.append(removeButton);
   bookItem.append(hr);
   booksList.append(bookItem);
-  removeButton.addEventListener('click', (event) => {
+  removeButton.addEventListener('click', () => {
     removeBookHandler(id);
   });
 };
@@ -62,48 +63,46 @@ function loadBooks() {
   });
 }
 
-window.onload = (event) => {
+window.onload = () => {
   retrieveData();
   loadBooks();
 };
 
 // Check if local storage available
-function storageAvailable(type) {
-  let storage;
-  try {
-    storage = window[type];
-    const x = '__storage_test__';
-    storage.setItem(x, x);
-    storage.removeItem(x);
-    return true;
-  } catch (e) {
-    return (
-      e instanceof DOMException &&
-      // everything except Firefox
-      (e.code === 22 ||
-        // Firefox
-        e.code === 1014 ||
-        // test name field too, because code might not be present
-        // everything except Firefox
-        e.name === 'QuotaExceededError' ||
-        // Firefox
-        e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-      // acknowledge QuotaExceededError only if there's something already stored
-      storage &&
-      storage.length !== 0
-    );
-  }
-}
+// function storageAvailable(type) {
+//   let storage;
+//   try {
+//     storage = window[type];
+//     const x = '__storage_test__';
+//     storage.setItem(x, x);
+//     storage.removeItem(x);
+//     return true;
+//   } catch (e) {
+//     return (
+//       e instanceof DOMException &&
+//       // everything except Firefox
+//       (e.code === 22 ||
+//         // Firefox
+//         e.code === 1014 ||
+//         // test name field too, because code might not be present
+//         // everything except Firefox
+//         e.name === 'QuotaExceededError' ||
+//         // Firefox
+//         e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+//       // acknowledge QuotaExceededError only if there's something already stored
+//       storage &&
+//       storage.length !== 0
+//     );
+//   }
+// }
 
-let availableStorage;
-
-if (storageAvailable('localStorage')) {
-  // Yippee! We can use localStorage awesomeness
-  availableStorage = window.localStorage;
-} else {
-  // Too bad, no localStorage for us
-  availableStorage = null;
-}
+// if (storageAvailable('localStorage')) {
+//   // Yippee! We can use localStorage awesomeness
+//   availableStorage = window.localStorage;
+// } else {
+//   // Too bad, no localStorage for us
+//   availableStorage = null;
+// }
 
 bookForm.addEventListener('submit', (event) => {
   event.preventDefault();
